@@ -1,0 +1,5 @@
+streamlit
+openai
+numpy
+hugchat
+python-dotenv

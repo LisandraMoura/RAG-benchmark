@@ -147,48 +147,71 @@ def retrieve_base(query, db):
 def answer_query_base(query, db, chatbot):
     documents, context = retrieve_base(query, db)
     prompt = f"""
-    Você é um assistente juridico que recebe uma determinado termo de busca: 
-    <pergunta>
+    Com base no termo de busca a abaixo, gere uma petição inicial que inclua o contexto recuperado como justificativa.
+    <Entrada do usuário>
     {query}
-    </pergunta>
-    Você tem acesso aos seguintes documentos, que devem fornecer contexto à medida que responde à consulta:
+    </Entrada do usuário>
+    Você tem acesso aos seguintes documentos, use-os para fundamentar a petição inicial:
     <contexto>
     {context}
     </contexto>
     Por favor, permaneça fiel ao contexto subjacente e só se desvie dele se tiver 100% de certeza de que já sabe a resposta. 
+    Construa uma petição simples e direta, evitando preâmbulos como 'Aqui está a resposta', etc.
     # TAREFA: Gere uma pequena petição inicial usando como referência do contexto recuperado. 
     """
     response = call_huggingchat(chatbot, prompt, model_name="meta-llama/Meta-Llama-3.1-70B-Instruct")
     return response
 
 # Aplicação em Streamlit
-st.title("Assistente Jurídico com RAG e Chatbot")
+st.title("Gerador de petição inicial")
 
-# Configuração de Login
-EMAIL = st.text_input("Email", type="default")
-PASSWD = st.text_input("Senha", type="password")
-if EMAIL and PASSWD:
-    cookie_path_dir = "./cookies/"
-    chatbot = huggingchat_login(EMAIL, PASSWD, cookie_path_dir)
-    if chatbot:
-        st.success("Login realizado com sucesso!")
+# Configuração de Login (E-mail e Senha fixos no código)
+EMAIL = "hdsdosol@gmail.com"
+PASSWD = "Lisa2210@" 
 
-        # Carregar o documento e inicializar o banco de vetores
-        with open('/home/lisamenezes/RAG-benchmark/data/fundamentos-train.json', 'r') as f:
-            fundamentos_data = json.load(f)
-        db = VectorDB("fundamentos")
-        db.load_data(fundamentos_data)
+# Login no HuggingChat
+cookie_path_dir = "./cookies/"
+chatbot = huggingchat_login(EMAIL, PASSWD, cookie_path_dir)
 
-        # Input de consulta
-        query = st.text_input("Insira a consulta jurídica:")
-        if query:
-            # Recuperar contexto e gerar resposta
-            results, context = retrieve_base(query, db)
-            response = answer_query_base(query, db, chatbot)
+if chatbot:
+    st.success("Login realizado com sucesso!")
 
-            # Exibir contexto recuperado e resposta
-            st.subheader("Contexto Recuperado")
-            st.text(context)
+    # Carregar o documento e inicializar o banco de vetores
+    with open('/home/lisamenezes/RAG-benchmark/data/fundamentos-train.json', 'r') as f:
+        fundamentos_data = json.load(f)
+    db = VectorDB("fundamentos")
+    db.load_data(fundamentos_data)
 
-            st.subheader("Resposta Gerada pelo LLM")
-            st.text(response)
+    # Input de consulta
+    query = st.text_input("Insira o assunto da petição inicial:")
+    if query:
+        # Recuperar contexto e gerar resposta
+        results, context = retrieve_base(query, db)
+        response = answer_query_base(query, db, chatbot)
+
+        # Estilo customizado com margens
+        custom_style = """
+        <style>
+            .custom-text {
+                margin: 20px 50px; /* Ajusta as margens superior/inferior e esquerda/direita */
+                padding: 10px;
+                background-color: #161A21; /* Fundo suave */
+                border-radius: 5px; /* Bordas arredondadas */
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.5; /* Melhor espaçamento entre linhas */
+                color: #FFFFFF; /* Fonte preta */
+            }
+        </style>
+        """
+
+        # Adicionar CSS ao Streamlit
+        st.markdown(custom_style, unsafe_allow_html=True)
+
+        # Exibir contexto recuperado
+        st.subheader("Contexto Recuperado")
+        st.markdown(f'<div class="custom-text">{context}</div>', unsafe_allow_html=True)
+
+        # Exibir resposta gerada
+        st.subheader(f"Petição inicial sobre '{query}':")
+        st.markdown(f'<div class="custom-text">{response}</div>', unsafe_allow_html=True)
