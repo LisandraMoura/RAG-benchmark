@@ -174,7 +174,12 @@ cookie_path_dir = "./cookies/"
 chatbot = huggingchat_login(EMAIL, PASSWD, cookie_path_dir)
 
 if chatbot:
-    st.success("Login realizado com sucesso!")
+    api_key = st.text_input("Insira sua chave de API do OpenAI:", type="password")
+    if api_key is not None:
+        openai.api_key = api_key
+        st.success("Chave de API atualizada com sucesso!")
+    else:
+        st.warning("Por favor, insira uma chave de API válida.")
 
     # Carregar o documento e inicializar o banco de vetores
     with open('data/fundamentos-all.json', 'r') as f:
