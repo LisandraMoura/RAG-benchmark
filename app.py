@@ -177,7 +177,7 @@ if chatbot:
     st.success("Login realizado com sucesso!")
 
     # Carregar o documento e inicializar o banco de vetores
-    with open('/home/lisamenezes/RAG-benchmark/data/fundamentos-train.json', 'r') as f:
+    with open('data/fundamentos-all.json', 'r') as f:
         fundamentos_data = json.load(f)
     db = VectorDB("fundamentos")
     db.load_data(fundamentos_data)
