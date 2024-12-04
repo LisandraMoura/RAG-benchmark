@@ -1,1 +1,8 @@
 .env
+
+/home/lisamenezes/RAG-benchmark/notebooks
+
+# dados
+/home/lisamenezes/RAG-benchmark/data/fundamentos-train.json
+/home/lisamenezes/RAG-benchmark/data/amostra.csv
+/home/lisamenezes/RAG-benchmark/data/amostra.json
