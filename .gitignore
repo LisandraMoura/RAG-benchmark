@@ -1,8 +1,11 @@
 .env
 
-/home/lisamenezes/RAG-benchmark/notebooks
+
+# vetor
+notebooks/data/fundamentos
 
 # dados
-/home/lisamenezes/RAG-benchmark/data/fundamentos-train.json
-/home/lisamenezes/RAG-benchmark/data/amostra.csv
-/home/lisamenezes/RAG-benchmark/data/amostra.json
+data/fundamentos-train.json
+data/amostra.csv
+data/amostra.json
+cookies
