@@ -11,8 +11,9 @@ from hugchat import hugchat
 from hugchat.login import Login
 
 load_dotenv()
-os.environ['VOYAGE_API_KEY'] = ('VOYAGE_API_KEY')
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = st.secrets["general"]["OPENAI_API_KEY"]
 
 # Classe VectorDB
 class VectorDB:
