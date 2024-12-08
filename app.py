@@ -12,8 +12,8 @@ from hugchat.login import Login
 
 load_dotenv()
 
-# openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.api_key = st.secrets["general"]["OPENAI_API_KEY"]
+openai.api_key = os.getenv("OPENAI_API_KEY")
+# openai.api_key = st.secrets["general"]["OPENAI_API_KEY"]
 
 # Classe VectorDB
 class VectorDB:
@@ -160,7 +160,7 @@ def answer_query_base(query, db, chatbot):
     Construa uma petição simples e direta, evitando preâmbulos como 'Aqui está a resposta', etc.
     # TAREFA: Gere uma pequena petição inicial usando como referência do contexto recuperado. 
     """
-    response = call_huggingchat(chatbot, prompt, model_name="meta-llama/Meta-Llama-3.1-70B-Instruct")
+    response = call_huggingchat(chatbot, prompt, model_name="CohereForAI/c4ai-command-r-plus-08-2024")
     return response
 
 # Aplicação em Streamlit
